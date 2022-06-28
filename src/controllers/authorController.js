@@ -1,12 +1,12 @@
 const authorModel = require("../models/authorModel")
 const jwt = require("jsonwebtoken");
 
-
+//<----------------------------------createAuthor---------------------------------------------------------------------------->//
 const createAuthor = async function (req, res) {
     try {
        let data = req.body
        if (Object.keys(data).length == 0) return res.status(404).send({ status: false, msg: "Provide data" })
- 
+      //<----------------------------validation----------------------------------------------------->//
        if (!data.fname)
           return res.status(400).send({ status: false, msg: "fname is mandatory" })
        if (typeof data.fname != "string")
@@ -44,7 +44,7 @@ const createAuthor = async function (req, res) {
        let pass = data.password.trim()
        if (pass.length === 0)
           return res.status(400).send({ status: false, msg: "Enter your Password " })
- 
+      //<---------------------------create------------------------------------------------------>//
        let saveData = await authorModel.create(data)
  
        res.status(201).send({ status: true, msg:"Author created",data: saveData })
@@ -55,9 +55,11 @@ const createAuthor = async function (req, res) {
     }
  }
 
+ //<-------------------------------------loginAuthor------------------------------------------------------------------------>//
  const loginAuthor = async function (req, res) {
     try {
        let data = req.body
+       //<------------------------------validation---------------------------------------------------------------->//
        if (Object.keys(data).length == 0) return res.status(404).send({ status: false, msg: "Provide data" })
        if (!data.email)
           return res.status(400).send({ status: false, msg: "email is mandatory" })
@@ -78,6 +80,7 @@ const createAuthor = async function (req, res) {
        if (!author)
           return res.status(400).send({ status: false, msg: "username or the password is not correct", });
        //creating token
+       //<---------------------------createtoken-------------------------------------------------------------------->//
        let token = jwt.sign(
           {
              authorId: author._id.toString(),
