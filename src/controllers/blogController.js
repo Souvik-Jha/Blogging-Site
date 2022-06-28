@@ -76,7 +76,27 @@ const updateBlog = async function (req, res) {
       let tags = data.tags
       let subcategory = data.subcategory
       let blogId = req.params.blogId
-      let validBlog = await blogModel.findOne({ _id: blogId, isDeleted: false })
+      if(tags){
+         let newTags = tags.trim()
+         if(newTags.length==0) return res.status(400).send({status:false,msg:"give input properly"})
+      }
+
+      if(subcategory){
+         let newSub = subcategory.trim()
+         if(newSub.length==0) return res.status(400).send({status:false,msg:"give input properly"})
+      }
+
+      if(data.title){
+         let newTitle = data.title.trim()
+         if(newTitle.length==0) return res.status(400).send({status:false,msg:"give input properly"})
+      }
+
+      if(data.body){
+         let newBody = data.body.trim()
+         if(newBody.length==0) return res.status(400).send({status:false,msg:"give input properly"})
+      }
+
+      let validBlog = await blogModel.findOne({_id: blogId, isDeleted: false })
       if (!mongoose.isValidObjectId(blogId)) return res.status(400).send({ status: false, msg: "invalid blog Id" })
       if (!validBlog) return res.status(404).send({ status: false, msg: "no such Blog" })
 
