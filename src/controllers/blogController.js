@@ -8,6 +8,8 @@ const createBlog = async function (req, res) {
    try {
       let data = req.body
       if (Object.keys(data).length == 1) return res.status(404).send({ status: false, msg: "Provide data" })
+
+
       //<---------------------------------validation----------------------------------------------------->//
 
       if (!data.title)
@@ -45,7 +47,13 @@ const createBlog = async function (req, res) {
       let Category = data.category.trim()
       if (Category.length === 0)
          return res.status(400).send({ status: false, msg: "Enter Category " })
+
+
       //<----------------------createBlog------------------------------------------------->//
+
+
+
+
       let saveData = await blogModel.create(data)
 
       res.status(201).send({ status: true, data: saveData })
@@ -56,6 +64,7 @@ const createBlog = async function (req, res) {
 }
 
 //<----------------------------------------getting blog--------------------------------------------------------------------->//
+
 
 const getBlog = async function (req, res) {
    try {
@@ -69,7 +78,11 @@ const getBlog = async function (req, res) {
    }
 
 }
+
+
 //<------------------------------------update Blog-------------------------------------------------------------------------------->//
+
+
 
 const updateBlog = async function (req, res) {
    try {
@@ -77,7 +90,11 @@ const updateBlog = async function (req, res) {
       let tags = data.tags
       let subcategory = data.subcategory
       let blogId = req.params.blogId
+
+
       //<---------------------------------validation-------------------------------------------------------------->//
+
+
       if(tags){
          let newTags = tags.trim()
          if(newTags.length==0) return res.status(400).send({status:false,msg:"give input properly"})
@@ -101,7 +118,11 @@ const updateBlog = async function (req, res) {
       let validBlog = await blogModel.findOne({_id: blogId, isDeleted: false })
       if (!mongoose.isValidObjectId(blogId)) return res.status(400).send({ status: false, msg: "invalid blog Id" })
       if (!validBlog) return res.status(404).send({ status: false, msg: "no such Blog" })
+
+
       //<-----------------------------updateBlog----------------------------------------------------------->//
+
+
       let updateBlog = await blogModel.findOneAndUpdate({
          _id: blogId
       }, {
@@ -126,6 +147,8 @@ const updateBlog = async function (req, res) {
 
 //<------------------------------------Delete Blog  by Id------------------------------------------------------------------------->//
 
+
+
 const deleteBlogById = async function (req, res) {
    try {
       let blogid = req.params.blogId
@@ -143,7 +166,11 @@ const deleteBlogById = async function (req, res) {
       res.status(500).send({ status: false, msg: err.message })
    }
 }
+
+
 //<---------------------------------------deleteBlogByParams------------------------------------------------------------------->//
+
+
 
 const deleteBlogByParams = async function (req, res) {
    try {
@@ -165,6 +192,8 @@ const deleteBlogByParams = async function (req, res) {
    }
 }
 
+
+//<----------------------------------exporting------------------------------------------//
 
 module.exports = {
    createBlog,

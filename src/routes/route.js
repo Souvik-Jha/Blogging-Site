@@ -5,13 +5,13 @@ const middleware=require("../middleware/auth")
 const authorController=require("../controllers/authorController")
 
 
-// author controller
+//-------------------------------- author controller--------------------------------------------
 router.post("/authors",authorController.createAuthor)
 
 router.post("/login",authorController.loginAuthor)
 
 
-//blog controller
+//---------------------------------blog controller----------------------------------------------
  
 router.post("/blogs",middleware.authentication,blogController.createBlog)
 

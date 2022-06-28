@@ -1,8 +1,9 @@
-const jwt = require("jsonwebtoken")
-const mongoose = require("mongoose")
-const blogModel = require("../models/blogModel")
+const jwt = require("jsonwebtoken") //require jsonwebtoken
+const mongoose = require("mongoose") //require mongoose
+const blogModel = require("../models/blogModel") //import blogModel
 var dToken
 
+//<-------------------------------Authentication------------------------------------------------------//
 const authentication = function (req, res, next) {
   try {
     let token = req.headers["X-Api-Key"];
@@ -22,6 +23,7 @@ const authentication = function (req, res, next) {
   }
 }
 
+//<-----------------------------Authorisation-----------------------------------------------------------//
 
 const Authorisation = async function (req, res, next) {
   try {
@@ -54,6 +56,9 @@ const Authorisation = async function (req, res, next) {
 
   }
 }
+
+
+//<----------------------------------exporting------------------------------------------//
 
 module.exports = { Authorisation, authentication }
 

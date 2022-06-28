@@ -29,7 +29,7 @@ const createAuthor = async function (req, res) {
        let includes = data.title
        let Enum = enums.includes(includes)
        if (!Enum) return res.status(400).send({ status: false, msg: "Enter the valid title Mr,Mrs,Miss" })
- 
+    //<------------------------------------------email validation----------------------------------------------
        if (!data.email)
           return res.status(400).send({ status: false, msg: "email is mandatory" })
        let regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
@@ -95,5 +95,9 @@ const createAuthor = async function (req, res) {
        res.status(500).send({ status: false, msg: err.message })
     }
  }
+
+
+//<----------------------------------exporting------------------------------------------//
+
 
  module.exports={createAuthor,loginAuthor}
