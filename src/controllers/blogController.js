@@ -115,7 +115,7 @@ const updateBlog = async function (req, res) {
       }, {
          new: true
       })
-      res.status(201).send({ status: true, data: updateBlog })
+      res.status(200).send({ status: true,message:"blog updated",data: updateBlog })
    }
    catch (err) {
       res.status(500).send({ status: false, msg: err.message })
@@ -153,7 +153,7 @@ const deleteBlogByParams = async function (req, res) {
 
       if (!updateData.modifiedCount)
 
-         return res.staus(400).send({ status: false, msg: "no such blog" })
+         return res.status(400).send({ status: false, msg: "no such blog" })
 
       res.status(200).send({ status: true, msg: "numbers of delated blog= " + updateData.modifiedCount })
    }
