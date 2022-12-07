@@ -13,15 +13,15 @@ router.post("/login",authorController.loginAuthor)
 
 //---------------------------------blog controller----------------------------------------------
  
-router.post("/blogs",middleware.authentication,blogController.createBlog)
+router.post("/blogs",middleware.authentication, blogController.createBlog)
 
-router.get("/blogs",middleware.authentication,blogController.getBlog)
+router.get("/blogs",middleware.authentication, blogController.getBlog)
 
-router.put("/blogs/:blogId",middleware.authentication,middleware.Authorisation,blogController.updateBlog)
+router.put("/blogs/:blogId",middleware.authentication, blogController.updateBlog)
 
-router.delete("/blogs/:blogId",middleware.authentication,middleware.Authorisation,blogController.deleteBlogById)
+router.delete("/blogs/:blogId",middleware.authentication, blogController.deleteBlogById)
 
-router.delete("/blogs",middleware.authentication,middleware.Authorisation,blogController.deleteBlogByParams)
+router.delete("/blogs",middleware.authentication, blogController.deleteBlogByParams)
 
 
 

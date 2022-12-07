@@ -38,7 +38,7 @@ const createBlog = async function (req, res) {
       if (!authId)
          return res.status(401).send({ status: false, msg: " Author not found " })
       if (req.body.tokenId != data.authorId)
-         return res.status(400).send({ status: false, msg: "you are not allow" })
+         return res.status(403).send({ status: false, msg: "you are not allow" })
 
       if (!data.category)
          return res.status(400).send({ status: false, msg: "category is mandatory" })
@@ -59,7 +59,7 @@ const createBlog = async function (req, res) {
       res.status(201).send({ status: true, data: saveData })
    } catch (err) {
 
-      res.status(500).send({ status: false, msg: err.message })
+      return res.status(500).send({ status: false, msg: err.message })
    }
 }
 
@@ -74,7 +74,7 @@ const getBlog = async function (req, res) {
       res.status(200).send({ status: true, data: allBlogs })
    }
    catch (error) {
-      res.status(500).send({ status: false, msg: error.message })
+      return res.status(500).send({ status: false, msg: error.message })
    }
 
 }
@@ -115,9 +115,11 @@ const updateBlog = async function (req, res) {
          if(newBody.length==0) return res.status(400).send({status:false,msg:"give input properly"})
       }
 
-      let validBlog = await blogModel.findOne({_id: blogId, isDeleted: false })
       if (!mongoose.isValidObjectId(blogId)) return res.status(400).send({ status: false, msg: "invalid blog Id" })
+      
+      let validBlog = await blogModel.findOne({_id: blogId, isDeleted: false })
       if (!validBlog) return res.status(404).send({ status: false, msg: "no such Blog" })
+      if(validBlog.authorId!=req.body.tokenId) return res.status(403).send({status: false, msg:"you are not authorized"})
 
 
       //<-----------------------------updateBlog----------------------------------------------------------->//
@@ -138,10 +140,10 @@ const updateBlog = async function (req, res) {
       }, {
          new: true
       })
-      res.status(200).send({ status: true,message:"blog updated",data: updateBlog })
+      return res.status(200).send({ status: true,message:"blog updated",data: updateBlog })
    }
    catch (err) {
-      res.status(500).send({ status: false, msg: err.message })
+      return res.status(500).send({ status: false, msg: err.message })
    }
 }
 
@@ -152,18 +154,19 @@ const updateBlog = async function (req, res) {
 const deleteBlogById = async function (req, res) {
    try {
       let blogid = req.params.blogId
-      let findId = await blogModel.findOne({ _id: blogid, isDeleted: false }).select({ _id: 1 })
+      let findId = await blogModel.findOne({ _id: blogid, isDeleted: false })
       if (!findId) {
-         res.status(404).send({ status: false, msg: "no such blog" })
+         return res.status(404).send({ status: false, msg: "no such blog" })
       }
       else {
+         if(findId.authorId!=req.body.tokenId) return res.status(403).send({status:false,msg:"you are unauthorized"})
          let updateDelete = await blogModel.findOneAndUpdate({ _id: findId._id }, { $set: { isDeleted: true, deletedAt: Date.now() } }, { new: true })
          console.log(updateDelete)
-         res.status(200).send({ status: true, msg: "blog is deleted" })
+         return res.status(200).send({ status: true, msg: "blog is deleted" })
       }
    }
    catch (err) {
-      res.status(500).send({ status: false, msg: err.message })
+      return res.status(500).send({ status: false, msg: err.message })
    }
 }
 

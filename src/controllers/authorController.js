@@ -26,17 +26,17 @@ const createAuthor = async function (req, res) {
        if (!data.title)
           return res.status(400).send({ status: false, msg: "title is mandatory" })
        const enums = ["Mr", "Mrs", "Miss"]
-       let includes = data.title
-       let Enum = enums.includes(includes)
+       let title = data.title
+       let Enum = enums.includes(title)
        if (!Enum) return res.status(400).send({ status: false, msg: "Enter the valid title Mr,Mrs,Miss" })
     //<------------------------------------------email validation----------------------------------------------
        if (!data.email)
           return res.status(400).send({ status: false, msg: "email is mandatory" })
        let regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
-       let mailtest = data.email
-       let emailValidate = regex.test(mailtest)
+       let email = data.email
+       let emailValidate = regex.test(email)
        if (!emailValidate) return res.status(400).send({ status: false, msg: "Enter Your Valid mail" })
-       let emailCheck = await authorModel.findOne({ email: data.email })
+       let emailCheck = await authorModel.findOne({ email })
        if (emailCheck) return res.status(400).send({ status: false, msg: "email already used" })
  
        if (!data.password)
