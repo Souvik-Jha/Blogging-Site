@@ -51,9 +51,6 @@ const createBlog = async function (req, res) {
 
       //<----------------------createBlog------------------------------------------------->//
 
-
-
-
       let saveData = await blogModel.create(data)
 
       res.status(201).send({ status: true, data: saveData })
@@ -95,31 +92,31 @@ const updateBlog = async function (req, res) {
       //<---------------------------------validation-------------------------------------------------------------->//
 
 
-      if(tags){
+      if (tags) {
          let newTags = tags.trim()
-         if(newTags.length==0) return res.status(400).send({status:false,msg:"give input properly"})
+         if (newTags.length == 0) return res.status(400).send({ status: false, msg: "give input properly" })
       }
-      
-      if(subcategory){
+
+      if (subcategory) {
          let newSub = subcategory.trim()
-         if(newSub.length==0) return res.status(400).send({status:false,msg:"give input properly"})
+         if (newSub.length == 0) return res.status(400).send({ status: false, msg: "give input properly" })
       }
 
-      if(data.title){
+      if (data.title) {
          let newTitle = data.title.trim()
-         if(newTitle.length==0) return res.status(400).send({status:false,msg:"give input properly"})
+         if (newTitle.length == 0) return res.status(400).send({ status: false, msg: "give input properly" })
       }
 
-      if(data.body){
+      if (data.body) {
          let newBody = data.body.trim()
-         if(newBody.length==0) return res.status(400).send({status:false,msg:"give input properly"})
+         if (newBody.length == 0) return res.status(400).send({ status: false, msg: "give input properly" })
       }
 
       if (!mongoose.isValidObjectId(blogId)) return res.status(400).send({ status: false, msg: "invalid blog Id" })
-      
-      let validBlog = await blogModel.findOne({_id: blogId, isDeleted: false })
+
+      let validBlog = await blogModel.findOne({ _id: blogId, isDeleted: false })
       if (!validBlog) return res.status(404).send({ status: false, msg: "no such Blog" })
-      if(validBlog.authorId!=req.body.tokenId) return res.status(403).send({status: false, msg:"you are not authorized"})
+      if (validBlog.authorId != req.body.tokenId) return res.status(403).send({ status: false, msg: "you are not authorized" })
 
 
       //<-----------------------------updateBlog----------------------------------------------------------->//
@@ -140,7 +137,7 @@ const updateBlog = async function (req, res) {
       }, {
          new: true
       })
-      return res.status(200).send({ status: true,message:"blog updated",data: updateBlog })
+      return res.status(200).send({ status: true, message: "blog updated", data: updateBlog })
    }
    catch (err) {
       return res.status(500).send({ status: false, msg: err.message })
@@ -158,12 +155,12 @@ const deleteBlogById = async function (req, res) {
       if (!findId) {
          return res.status(404).send({ status: false, msg: "no such blog" })
       }
-      else {
-         if(findId.authorId!=req.body.tokenId) return res.status(403).send({status:false,msg:"you are unauthorized"})
-         let updateDelete = await blogModel.findOneAndUpdate({ _id: findId._id }, { $set: { isDeleted: true, deletedAt: Date.now() } }, { new: true })
-         console.log(updateDelete)
-         return res.status(200).send({ status: true, msg: "blog is deleted" })
-      }
+
+      if (findId.authorId != req.body.tokenId) return res.status(403).send({ status: false, msg: "you are unauthorized" })
+      let updateDelete = await blogModel.findOneAndUpdate({ _id: blogid }, { $set: { isDeleted: true, deletedAt: Date.now() } }, { new: true })
+      console.log(updateDelete)
+      return res.status(200).send({ status: true, msg: "blog is deleted" })
+
    }
    catch (err) {
       return res.status(500).send({ status: false, msg: err.message })
@@ -183,7 +180,7 @@ const deleteBlogByParams = async function (req, res) {
       let updateData = await blogModel.updateMany(
          { $and: [{ authorId: req.body.tokenId }, { isDeleted: false }, getobject] }, { $set: { isDeleted: true, deletedAt: Date.now() } },
          { new: true })
-      
+
       if (!updateData.modifiedCount)
 
          return res.status(400).send({ status: false, msg: "no such blog" })

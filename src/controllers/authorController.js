@@ -89,10 +89,10 @@ const createAuthor = async function (req, res) {
           "project1-group10"
        );
        res.setHeader("x-api-key", token);
-       res.status(200).send({ status: true, data: token });
+       return res.status(200).send({ status: true, data: token });
     } catch (err) {
        console.log("This is the error :", err.message)
-       res.status(500).send({ status: false, msg: err.message })
+       return res.status(500).send({ status: false, msg: err.message })
     }
  }
 

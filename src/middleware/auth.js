@@ -28,42 +28,6 @@ const authentication = function (req, res, next) {
   }
 }
 
-//<-----------------------------Authorisation-----------------------------------------------------------//
-
-// const Authorisation = async function (req, res, next) {
-//   try {
-//     let presentPrams = req.params
-//     if (Object.keys(presentPrams).length == 0) presentPrams = req.query
-//     if (Object.keys(presentPrams).length == 0) return res.status(400).send({ status: false, msg: "no input found" })
-
-//     if (presentPrams.blogId)
-//       if (!mongoose.isValidObjectId(presentPrams.blogId))
-//         return res.status(400).send({ status: false, msg: "invalid blogId" })
-
-//     if (presentPrams.authorId)
-//       if (!mongoose.isValidObjectId(presentPrams.authorId))
-//         return res.status(400).send({ status: false, msg: "invalid authorId" })
-
-//     let auth
-//     if (!presentPrams.blogId) {
-//       auth = await blogModel.find({ $and: [{ authorId: dToken.authorId }, presentPrams] }).select({ _id: 0, authorId: 1 })
-//       if (auth.keys() == -1)
-//         return res.status(404).send({ status: false, msg: "unautorised" })
-//     } else {
-//       auth = await blogModel.findById({ _id: presentPrams.blogId }).select({ _id: 0, authorId: 1 })
-//       if (!auth) return res.status(404).send({ status: false, msg: "NoT found" })
-//       if (dToken.authorId != auth.authorId)
-//         return res.status(404).send({ status: false, msg: "unautorised" })
-//     }
-//     next()
-//   } catch (err) {
-//     res.status(500).send({ status: false, msg: err.message })
-
-//   }
-// }
-
-
-//<----------------------------------exporting------------------------------------------//
 
 module.exports = { authentication }
 
