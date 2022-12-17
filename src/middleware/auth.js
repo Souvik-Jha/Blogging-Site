@@ -1,7 +1,4 @@
 const jwt = require("jsonwebtoken") //require jsonwebtoken
-const mongoose = require("mongoose") //require mongoose
-const blogModel = require("../models/blogModel") //import blogModel
-var dToken
 
 //<-------------------------------Authentication------------------------------------------------------//
 const authentication = function (req, res, next) {
